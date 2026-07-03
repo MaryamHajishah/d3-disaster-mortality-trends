@@ -43,14 +43,14 @@ export function renderDeathsByTypeChart(container, data, tooltip, options = {}) 
             .attr('y', (d) => y(d[1]))
             .attr('width', x.bandwidth())
             .attr('height', (d) => Math.max(0, y(d[0]) - y(d[1])))
-            .on('mousemove', (event, d) => {
+            .on('pointermove', (event, d) => {
                 const value = d[1] - d[0];
                 tooltip.show(
                     `<strong>${d.key} &middot; ${formatDecade(d.data.decade)}</strong>${Math.round(value).toLocaleString()} deaths`,
                     event.clientX, event.clientY
                 );
             })
-            .on('mouseleave', () => tooltip.hide());
+            .on('pointerleave', () => tooltip.hide());
     };
 
     draw();

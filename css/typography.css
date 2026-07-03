@@ -1,0 +1,65 @@
+/*
+   Typography.
+
+   Type scale: Perfect Fourth (1.333) on a 16px base.
+   Fonts: Space Grotesk for headings, Source Sans 3 for body text, IBM Plex
+   Mono for numbers and axis labels. Line length is capped at 62ch for
+   comfortable reading.
+*/
+
+:root {
+    --step--1: 0.75rem;
+    --step-0: 1rem;
+    --step-1: 1.333rem;
+    --step-2: 1.777rem;
+    --step-3: 2.369rem;
+    --step-4: 3.157rem;
+    --step-5: 4.209rem;
+
+    --line-tight: 1.15;
+    --line-snug: 1.35;
+    --line-normal: 1.6;
+
+    --measure: 62ch;
+
+    --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --font-body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: var(--line-normal);
+    color: var(--ink-900);
+    background: var(--paper);
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: var(--line-tight);
+    font-weight: 600;
+    color: var(--ink-900);
+}
+
+h1 { font-size: clamp(var(--step-4), 6vw, var(--step-5)); font-weight: 700; }
+h2 { font-size: clamp(var(--step-3), 4vw, var(--step-4)); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+
+p { max-width: var(--measure); color: var(--ink-700); }
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-deep); }
+
+::selection { background: var(--straw); color: var(--ink-900); }
+
+.section-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-2xs);
+}

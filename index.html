@@ -10,11 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/hero.css">
-<link rel="stylesheet" href="css/story.css">
-<link rel="stylesheet" href="css/methodology.css">
+<link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/typography.css">
+<link rel="stylesheet" href="css/charts.css">
+<link rel="stylesheet" href="css/scrollytelling.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -229,8 +230,8 @@
                     <ol>
                         <li>Download the raw CSV and its metadata for each indicator from the
                         Our World in Data API.</li>
-                        <li>Clean and aggregate with one pandas script,
-                        <code>preprocessing/clean_data.py</code>.</li>
+                        <li>Clean and aggregate in a documented pandas notebook,
+                        <code>preprocessing/data_preprocessing.ipynb</code>.</li>
                         <li>Write one small JSON file per chart into <code>data/</code>.</li>
                         <li>The page loads those files directly with D3. There is no server and
                         no database.</li>

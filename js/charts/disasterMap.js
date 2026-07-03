@@ -38,7 +38,7 @@ export async function renderDisasterMap(container, mapData, tooltip) {
             .attr('d', path)
             .attr('stroke', '#f6f2ea')
             .attr('stroke-width', 0.5)
-            .on('mousemove', (event, d) => {
+            .on('pointermove', (event, d) => {
                 const entry = mapData.countries[d.id];
                 const rate = entry?.rates?.[String(currentDecade)];
                 const label = entry ? entry.name : (d.properties?.name ?? 'Unknown');
@@ -47,7 +47,7 @@ export async function renderDisasterMap(container, mapData, tooltip) {
                     : `${rate.toFixed(2)} deaths per 100,000 people`;
                 tooltip.show(`<strong>${label} &middot; ${formatDecade(currentDecade)}</strong>${text}`, event.clientX, event.clientY);
             })
-            .on('mouseleave', () => tooltip.hide());
+            .on('pointerleave', () => tooltip.hide());
 
         colorPaths();
     };

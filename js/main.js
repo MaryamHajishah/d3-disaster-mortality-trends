@@ -6,11 +6,13 @@ import { Tooltip } from './modules/tooltip.js';
 import { StoryScroller } from './modules/storyScroller.js';
 import { setupNav } from './modules/nav.js';
 
-import { renderEventsChart } from './charts/eventsChart.js';
-import { renderDeathRateChart } from './charts/deathRateChart.js';
-import { renderDeathsByTypeChart } from './charts/deathsByTypeChart.js';
-import { renderHeatChart } from './charts/heatChart.js';
-import { renderDisasterMap } from './charts/disasterMap.js';
+import {
+    renderEventsChart,
+    renderDeathRateChart,
+    renderDeathsByTypeChart,
+    renderHeatChart,
+    renderDisasterMap,
+} from './charts/index.js';
 
 // Chapter accents step through the dry scale so the page darkens as the
 // story moves from setup to warning. Values mirror the tokens in tokens.css.

@@ -48,7 +48,7 @@ export function renderHeatChart(container, data, tooltip) {
             .attr('cy', (v) => y(v))
             .attr('r', 4)
             .attr('fill', LINE_COLOR)
-            .on('mousemove', (event, v) => {
+            .on('pointermove', (event, v) => {
                 const i = values.indexOf(v);
                 const suffix = data.partial_decade === decades[i] ? ' (partial decade)' : '';
                 tooltip.show(
@@ -56,7 +56,7 @@ export function renderHeatChart(container, data, tooltip) {
                     event.clientX, event.clientY
                 );
             })
-            .on('mouseleave', () => tooltip.hide());
+            .on('pointerleave', () => tooltip.hide());
 
         // the six-year decade needs a flag right on the chart, not only in the text
         if (data.partial_decade) {

@@ -1,13 +1,27 @@
 # The Quiet Victory
 
-A data-driven storytelling website built for a university visualization
-course. It uses EM-DAT disaster records to tell one story: recorded natural
-disasters have multiplied more than fortyfold since 1900, yet the chance of
-dying in one fell by over 90 percent. The site walks through why that
-happened (mostly the end of drought famines) and ends on the one number
-moving the wrong way, deaths from extreme heat.
+A data-driven scrollytelling website on a century of natural disasters, built
+with D3.js and EM-DAT data.
 
-**Live site:** add the GitHub Pages URL here after deploying
+**Course**: Data Visualization
+**Team**: Maryam Hajishah (solo): data collection, preprocessing, visualization and design
+**Live site**: add the GitHub Pages URL here after deploying
+
+---
+
+## Project overview
+
+Recorded natural disasters have multiplied more than fortyfold since 1900,
+and it is easy to assume the danger grew with it. The data shows the
+opposite: the chance of dying in a disaster fell by over 90 percent. The
+site walks through why that happened (mostly the end of drought famines)
+and ends on the one number moving the wrong way, deaths from extreme heat.
+
+The story unfolds in three chapters over six scroll steps, with one chart
+per step: stacked bars of recorded events, the falling death-rate line,
+deaths by disaster type (twice, the second time with the drought layer
+highlighted), a rising extreme-temperature line, and a choropleth map with
+a decade toggle.
 
 ## Data sources
 
@@ -24,32 +38,72 @@ moving the wrong way, deaths from extreme heat.
 Per-dataset citations, taken from OWID's own metadata, are rendered in the
 site's methodology section from `data/sources.json`.
 
-## Folder structure
+## Project structure
 
 ```
 natural-disasters-story/
-├── index.html              # the whole site; structure only, no data or logic
-├── css/                    # one stylesheet per concern
+├── index.html                       # main entry point
+├── css/
+│   ├── main.css                     # design tokens, layout, header, hero, footer
+│   ├── typography.css               # font choices, type scale, text styles
+│   ├── charts.css                   # axes, gridlines and tooltip styling
+│   ├── scrollytelling.css           # scroll narrative layout and chapter rail
+│   └── responsive.css               # small-screen and touch adjustments
 ├── js/
-│   ├── main.js             # wires data, charts and the scroll narrative together
-│   ├── modules/            # data loading, tooltip, scroll controller, header
-│   └── charts/             # one D3 render function per chart
-├── data/                   # cleaned JSON the charts fetch (pipeline output)
+│   ├── main.js                      # wires data, charts and scroll narrative together
+│   ├── modules/
+│   │   ├── dataLoader.js            # JSON fetching with a small cache
+│   │   ├── storyScroller.js         # scroll-position step tracking
+│   │   ├── tooltip.js               # shared tooltip component
+│   │   └── nav.js                   # header behavior
+│   └── charts/
+│       ├── index.js                 # chart exports
+│       ├── baseChart.js             # shared mounting, sizing and color scales
+│       ├── eventsChart.js           # step 1: recorded events per decade
+│       ├── deathRateChart.js        # step 2: the falling death rate
+│       ├── deathsByTypeChart.js     # steps 3 and 4: deaths stacked by type
+│       ├── heatChart.js             # step 5: extreme-temperature deaths
+│       └── disasterMap.js           # step 6: choropleth with decade toggle
+├── data/
+│   ├── events_by_decade.json        # recorded events per decade, by type
+│   ├── death_rate_world.json        # world death rate per 100,000, by decade
+│   ├── deaths_by_type_decade.json   # absolute deaths per decade, by type
+│   ├── country_death_rate_map.json  # per-country decade rates, keyed by ISO code
+│   └── sources.json                 # citations shown in the methodology section
 ├── preprocessing/
-│   ├── raw/                # raw CSVs from OWID, committed for reproducibility
-│   ├── clean_data.py       # pandas pipeline: raw/*.csv to ../data/*.json
+│   ├── data_preprocessing.ipynb     # pandas pipeline: raw/*.csv to ../data/*.json
+│   ├── raw/                         # raw CSVs from OWID, committed for reproducibility
 │   └── requirements.txt
-└── assets/images/
+├── assets/
+│   └── images/                      # favicon
+└── README.md
 ```
 
 The site has no backend. The charts fetch the JSON files in `data/` directly.
-Those files are generated only by `preprocessing/clean_data.py`; nothing in
+Those files are generated only by the preprocessing notebook; nothing in
 `data/` is edited by hand.
 
-## Reproducing the data
+## Running the preprocessing
 
-The raw CSVs are already in `preprocessing/raw/`, so the pipeline runs
-offline. To fetch fresh copies (for example after an EM-DAT update):
+The raw CSVs are already in `preprocessing/raw/`, so the notebook runs
+offline:
+
+```bash
+cd preprocessing
+pip install -r requirements.txt
+jupyter notebook data_preprocessing.ipynb   # then Run All
+```
+
+Or without opening the browser UI:
+
+```bash
+jupyter execute data_preprocessing.ipynb
+```
+
+Either way regenerates the five files in `data/`. The notebook ends with
+sanity checks that fail loudly if a re-run produces broken output.
+
+To fetch fresh raw data (for example after an EM-DAT update):
 
 ```bash
 for slug in natural-disasters-deaths number-of-natural-disaster-events \
@@ -60,17 +114,6 @@ done
 curl -s "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv" \
   -o preprocessing/raw/iso3166_lookup.csv
 ```
-
-Then run the pipeline:
-
-```bash
-cd preprocessing
-pip install -r requirements.txt
-python clean_data.py
-```
-
-This regenerates the five files in `data/`. Each builder function in the
-script says which chart its output feeds.
 
 ## Running the site locally
 
@@ -92,10 +135,9 @@ directory. The site is already static, so there is nothing to build.
 ## Tech stack
 
 - HTML, CSS and vanilla JavaScript (ES modules)
-- [D3.js v7](https://d3js.org/) for the charts, with a small
-  IntersectionObserver controller for the scroll narrative
-  (`js/modules/storyScroller.js`)
-- Python and pandas for preprocessing
+- [D3.js v7](https://d3js.org/) for the charts, with a small scroll
+  controller for the narrative (`js/modules/storyScroller.js`)
+- Python, pandas and Jupyter for preprocessing
 
 ## Known limitations
 

@@ -1,0 +1,26 @@
+/* Styling shared by the D3 charts: axes, gridlines and the tooltip. */
+
+.chart-slot { width: 100%; height: calc(100% - 2.4rem); }
+.chart-slot svg { width: 100%; height: 100%; overflow: visible; }
+
+.axis text { font-family: var(--font-mono); font-size: 0.6875rem; fill: var(--ink-500); }
+.axis path, .axis line { stroke: var(--ink-300); }
+.gridline { stroke: var(--ink-100); stroke-dasharray: 2 3; }
+
+.chart-tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--ink-900);
+    color: var(--paper);
+    font-size: 0.8125rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    max-width: 220px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 120ms ease, transform 120ms ease;
+    z-index: 500;
+}
+.chart-tooltip.is-visible { opacity: 1; transform: translateY(0); }
+.chart-tooltip strong { display: block; margin-bottom: 2px; }

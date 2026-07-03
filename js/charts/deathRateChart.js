@@ -52,7 +52,7 @@ export function renderDeathRateChart(container, data, tooltip) {
             .attr('cy', (v) => y(v))
             .attr('r', 4)
             .attr('fill', LINE_COLOR)
-            .on('mousemove', (event, v) => {
+            .on('pointermove', (event, v) => {
                 const i = data.total.indexOf(v);
                 const suffix = data.partial_decade === decades[i] ? ' (partial decade)' : '';
                 tooltip.show(
@@ -60,7 +60,7 @@ export function renderDeathRateChart(container, data, tooltip) {
                     event.clientX, event.clientY
                 );
             })
-            .on('mouseleave', () => tooltip.hide());
+            .on('pointerleave', () => tooltip.hide());
     };
 
     draw();

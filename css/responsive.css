@@ -34,3 +34,9 @@
     .story-visual { padding: var(--space-xs); }
     .roadmap-chip .chip-label { font-size: 0.8125rem; }
 }
+
+/* larger tap targets on touch devices */
+@media (pointer: coarse) {
+    .decade-btn { padding: var(--space-xs) var(--space-md); }
+    .roadmap-chip { padding: var(--space-xs) var(--space-md); }
+}
