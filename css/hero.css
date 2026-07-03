@@ -1,0 +1,134 @@
+/* Hero (scarf) section: framing, key numbers, and the story roadmap. */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-h) + var(--space-xl)) 0 var(--space-xl);
+    background:
+        radial-gradient(circle at 12% 18%, rgba(194, 149, 75, 0.10), transparent 45%),
+        radial-gradient(circle at 88% 82%, rgba(160, 92, 59, 0.08), transparent 50%),
+        var(--paper);
+}
+
+.hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+}
+
+.hero-title { max-width: 20ch; margin-bottom: var(--space-sm); }
+.hero-title em {
+    font-style: normal;
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--straw);
+    text-decoration-thickness: 6px;
+    text-underline-offset: 6px;
+}
+
+.hero-dek {
+    font-size: var(--step-1);
+    font-weight: 400;
+    max-width: 52ch;
+    color: var(--ink-700);
+    margin-bottom: var(--space-md);
+}
+
+/* roadmap chips: the three chapters, clickable, names only so the
+   reveal in chapter two is not spoiled up front */
+.hero-roadmap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-lg);
+}
+.roadmap-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-sm);
+    border: 1px solid var(--ink-300);
+    border-radius: 999px;
+    background: var(--paper-raised);
+    text-decoration: none;
+    color: var(--ink-700);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: border-color var(--ease), color var(--ease), transform var(--ease);
+}
+.roadmap-chip:hover { border-color: var(--accent); color: var(--ink-900); transform: translateY(-1px); }
+.roadmap-chip .chip-num {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--accent);
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-md);
+    max-width: 900px;
+    margin-bottom: var(--space-lg);
+}
+
+.hero-stat {
+    background: var(--paper-raised);
+    border: 1px solid var(--ink-100);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+    box-shadow: var(--shadow-sm);
+}
+
+.hero-stat-value {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--step-3);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: var(--space-3xs);
+}
+.hero-stat-value.is-positive { color: var(--sage-deep); }
+
+.hero-stat-label {
+    font-size: 0.875rem;
+    color: var(--ink-700);
+    line-height: var(--line-snug);
+}
+
+.hero-source-note {
+    font-size: 0.8125rem;
+    color: var(--ink-500);
+    max-width: 60ch;
+}
+.hero-source-note a { color: var(--ink-500); text-decoration: underline; }
+
+.scroll-cue {
+    margin-top: var(--space-lg);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    color: var(--ink-500);
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+.scroll-cue-arrow {
+    width: 18px; height: 18px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    animation: bob 1.8s ease-in-out infinite;
+}
+@keyframes bob {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); }
+    50% { transform: rotate(45deg) translate(4px, 4px); }
+}
+
+@media (max-width: 720px) {
+    .hero-stats { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,83 @@
+/*
+   Design tokens.
+
+   Type scale: Perfect Fourth (1.333) on a 16px base.
+   Fonts: Space Grotesk for headings, Source Sans 3 for body, IBM Plex Mono
+   for numbers and axis labels.
+
+   The color palette follows the convention of professional drought maps
+   (US Drought Monitor, NASA soil-moisture imagery): a dry sequential scale
+   from straw to umber, warm paper background, and a single sage green
+   reserved for data that means improvement. No blues.
+*/
+
+:root {
+    /* type scale */
+    --step--1: 0.75rem;
+    --step-0: 1rem;
+    --step-1: 1.333rem;
+    --step-2: 1.777rem;
+    --step-3: 2.369rem;
+    --step-4: 3.157rem;
+    --step-5: 4.209rem;
+
+    --line-tight: 1.15;
+    --line-snug: 1.35;
+    --line-normal: 1.6;
+
+    --measure: 62ch;
+
+    --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --font-body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+    /* base surfaces and ink */
+    --paper: #f6f2ea;
+    --paper-raised: #ffffff;
+    --ink-900: #26221d;
+    --ink-700: #4a443c;
+    --ink-500: #797266;
+    --ink-300: #cfc8bb;
+    --ink-100: #e9e3d6;
+
+    /* the dry scale */
+    --straw: #e3d3a3;
+    --ochre: #c2954b;
+    --sienna: #a05c3b;
+    --umber: #5e3023;
+
+    /* main accent used for links, progress, small UI */
+    --accent: var(--sienna);
+    --accent-deep: var(--umber);
+
+    /* sage marks improvement in the data, nothing else */
+    --sage: #7c9885;
+    --sage-deep: #5f7d6c;
+
+    /* chapter accents step through the dry scale, darkened for text contrast */
+    --chapter-expect: #6f6242;
+    --chapter-surprise: #9a5432;
+    --chapter-threat: #5e3023;
+
+    --shadow-sm: 0 1px 2px rgba(38, 34, 29, 0.08);
+    --shadow-md: 0 6px 20px rgba(38, 34, 29, 0.10);
+    --shadow-lg: 0 14px 36px rgba(38, 34, 29, 0.14);
+
+    --radius-sm: 3px;
+    --radius-md: 8px;
+    --radius-lg: 14px;
+
+    --space-3xs: 0.25rem;
+    --space-2xs: 0.5rem;
+    --space-xs: 0.75rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2.5rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+
+    --content-width: 1180px;
+    --header-h: 64px;
+
+    --ease: 220ms ease;
+}

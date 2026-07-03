@@ -1,0 +1,36 @@
+/* Small-screen adjustments. */
+
+@media (max-width: 1100px) {
+    /* the rail overlaps the chart panel on narrow desktops, so drop it early */
+    .chapter-rail { display: none; }
+}
+
+@media (max-width: 900px) {
+    .main-nav { display: none; }
+
+    .story-layout { flex-direction: column; }
+
+    .story-text { flex: 1 1 auto; max-width: none; width: 100%; }
+
+    .story-visual-rail {
+        position: sticky;
+        top: var(--header-h);
+        height: 46vh;
+        order: -1;
+    }
+
+    .story-step { min-height: auto; padding: var(--space-md) 0; }
+    .story-step:first-child { padding-top: var(--space-md); }
+
+    .story-card { opacity: 1; transform: none; }
+
+    .method-grid { grid-template-columns: 1fr; }
+
+    .footer-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+}
+
+@media (max-width: 540px) {
+    .hero-stats { grid-template-columns: 1fr; }
+    .story-visual { padding: var(--space-xs); }
+    .roadmap-chip .chip-label { font-size: 0.8125rem; }
+}

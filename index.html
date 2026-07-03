@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Quiet Victory: a century of natural disasters in data</title>
+<meta name="description" content="Recorded natural disasters have multiplied since 1900, yet the chance of dying in one fell by more than 90 percent. The data behind an unreported success story, and the one number now moving the wrong way.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/story.css">
+<link rel="stylesheet" href="css/methodology.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="story-progress"><div class="story-progress-fill"></div></div>
+
+<header class="site-header">
+    <div class="container">
+        <a href="#top" class="brand"><span class="brand-mark">&#9650;</span> The Quiet Victory</a>
+        <nav class="main-nav" aria-label="Primary">
+            <ul>
+                <li><a href="#story">The story</a></li>
+                <li><a href="#methodology">Methodology</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- mirrors the hero roadmap while the reader scrolls the story -->
+<nav class="chapter-rail" aria-label="Story chapters">
+    <a href="#step-1" data-rail="expect"><span class="rail-label">What you'd expect</span></a>
+    <a href="#step-2" data-rail="surprise"><span class="rail-label">The surprise</span></a>
+    <a href="#step-5" data-rail="threat"><span class="rail-label">The new threat</span></a>
+</nav>
+
+<main id="top">
+
+    <!-- hero / scarf -->
+    <section class="hero">
+        <div class="container">
+            <p class="hero-eyebrow">A data story &middot; Natural disasters, 1900&ndash;2025</p>
+            <h1 class="hero-title">The deadliest age of natural disasters is <em>behind us.</em></h1>
+            <p class="hero-dek">
+                Since 1900 the number of recorded disasters has grown more than fortyfold,
+                and it is easy to assume the danger grew with it. The record shows the
+                opposite: the chance of dying in a disaster fell by over 90 percent.
+                This is the story of how that happened, and of the one number now moving
+                the wrong way.
+            </p>
+
+            <nav class="hero-roadmap" aria-label="Story outline">
+                <a href="#step-1" class="roadmap-chip"><span class="chip-num">01</span><span class="chip-label">What you'd expect</span></a>
+                <a href="#step-2" class="roadmap-chip"><span class="chip-num">02</span><span class="chip-label">The surprise</span></a>
+                <a href="#step-5" class="roadmap-chip"><span class="chip-num">03</span><span class="chip-label">The new threat</span></a>
+            </nav>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-value is-positive" id="stat-decline">-93%</span>
+                    <span class="hero-stat-label">drop in the global disaster death rate, from the 1900s to the 2020s</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value" id="stat-events-multiplier">46x</span>
+                    <span class="hero-stat-label">more disasters recorded per decade now than in the 1900s</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value" id="stat-heat-multiplier">2.4x</span>
+                    <span class="hero-stat-label">extreme-temperature deaths in the 2020s so far, compared with the whole 2010s</span>
+                </div>
+            </div>
+
+            <p class="hero-source-note">
+                Source: EM-DAT, the international disaster database (CRED / UCLouvain), retrieved through
+                <a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">Our World in Data</a>.
+                The 2020s cover 2020 to 2025 only. Coverage caveats are described in the
+                <a href="#methodology">methodology</a>.
+            </p>
+
+            <a href="#story" class="scroll-cue">Scroll to begin <span class="scroll-cue-arrow" aria-hidden="true"></span></a>
+        </div>
+    </section>
+
+    <!-- the story -->
+    <section class="story section" id="story">
+        <div class="container story-layout">
+
+            <div class="story-text">
+
+                <!-- chapter 1: confirm the reader's instinct before overturning it -->
+                <article class="story-step" id="step-1" data-step="1" data-chart="events" data-chapter="expect">
+                    <div class="story-card">
+                        <span class="chapter-tag">01 &middot; What you'd expect</span>
+                        <h3>Disasters seem to be everywhere</h3>
+                        <p>EM-DAT recorded 79 natural disasters worldwide in the 1900s. In the
+                        2010s it recorded 3,647. If it feels like the news brings a new flood,
+                        storm or wildfire every week, this chart agrees with you.</p>
+                        <p class="hook">So more people must be dying than ever. Right?</p>
+                        <p class="figure-note">Part of this climb is bookkeeping, not weather:
+                        systematic global reporting only took shape after the 1960s, so the
+                        early decades miss many smaller events.</p>
+                    </div>
+                </article>
+
+                <!-- chapter 2: the reveal -->
+                <article class="story-step" id="step-2" data-step="2" data-chart="deathRate" data-chapter="surprise">
+                    <div class="story-card">
+                        <span class="chapter-tag">02 &middot; The surprise</span>
+                        <h3>Deaths went the other way</h3>
+                        <p>In the 1900s, disasters killed about 9 of every 100,000 people alive.
+                        In the 2020s so far, that figure is below 0.6. While recorded disasters
+                        multiplied by 46, the risk of dying in one fell by more than 90 percent.</p>
+                        <p>Almost nobody knows this. It may be the least reported success story
+                        of the last hundred years.</p>
+                        <p class="figure-note">Each point is a decade average. The 2020s point
+                        covers 2020 to 2025 only.</p>
+                    </div>
+                </article>
+
+                <article class="story-step" id="step-3" data-step="3" data-chart="deathsAll" data-chapter="surprise">
+                    <div class="story-card">
+                        <span class="chapter-tag">02 &middot; The surprise</span>
+                        <h3>The old killer was hunger</h3>
+                        <p>The towering bars early in the century are not collapsing buildings.
+                        They are droughts that turned into famines. The Chinese droughts of the
+                        1920s and the 1960s each starved millions of people; a handful of events
+                        like these dominate the entire historical death toll.</p>
+                    </div>
+                </article>
+
+                <article class="story-step" id="step-4" data-step="4" data-chart="deathsDrought" data-chapter="surprise">
+                    <div class="story-card">
+                        <span class="chapter-tag">02 &middot; The surprise</span>
+                        <h3>And hunger is the problem we solved</h3>
+                        <p>Follow the drought layer alone: from millions of deaths per decade to
+                        a few thousand. Global food trade, weather forecasting and famine
+                        early-warning systems ended mass starvation from drought.</p>
+                        <p>None of that was automatic. It was built, piece by piece, over decades.
+                        The collapse in disaster deaths is an achievement, not a coincidence.</p>
+                    </div>
+                </article>
+
+                <!-- chapter 3: the warning -->
+                <article class="story-step" id="step-5" data-step="5" data-chart="heat" data-chapter="threat">
+                    <div class="story-card">
+                        <span class="chapter-tag">03 &middot; The new threat</span>
+                        <h3>One line is rising</h3>
+                        <p>Extreme temperatures are the exception to everything above. Heat and
+                        cold killed more people in the first six years of the 2020s than in the
+                        entire 2010s, and much of that toll landed in wealthy countries that
+                        considered themselves safe. The European heat waves of 2003 and 2022 sit
+                        inside this line.</p>
+                        <p class="figure-note">The 2020s bar is a six-year count and will grow
+                        before the decade ends.</p>
+                    </div>
+                </article>
+
+                <article class="story-step" id="step-6" data-step="6" data-chart="map" data-chapter="threat">
+                    <div class="story-card">
+                        <span class="chapter-tag">03 &middot; The new threat</span>
+                        <h3>Progress, seen from above</h3>
+                        <p>Compare the 1980s with the 2020s: most of the map gets lighter. The
+                        lesson of the last century is that preparation works. The lesson of this
+                        one may be that it has to keep working, because heat is a new test of old
+                        defenses.</p>
+                        <div class="story-control" role="group" aria-label="Choose a decade to display">
+                            <span class="control-label">Decade shown on the map</span>
+                            <button type="button" class="decade-btn" data-decade="1980">1980s</button>
+                            <button type="button" class="decade-btn is-active" data-decade="2020">2020s (partial)</button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="story-visual-rail">
+                <div class="story-visual" id="story-visual">
+                    <div class="story-visual-head">
+                        <span class="story-visual-title" id="chart-title">Recorded disasters per decade</span>
+                        <span class="story-visual-unit" id="chart-unit">events per decade</span>
+                    </div>
+                    <div class="chart-slot" id="chart-slot"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- methodology -->
+    <section class="section methodology" id="methodology">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-eyebrow">Methodology</span>
+                <h2>How this was built</h2>
+                <p>Where the numbers come from, what was changed on the way, and where you
+                should be skeptical.</p>
+            </div>
+
+            <div class="method-grid">
+                <article class="method-card">
+                    <h3>Data sources</h3>
+                    <p>All figures come from <strong>EM-DAT</strong>, the international disaster
+                    database maintained by CRED at UCLouvain, retrieved as CSV downloads through
+                    <a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">Our World in Data</a>.</p>
+                    <ul class="source-list" id="source-list"></ul>
+                </article>
+
+                <article class="method-card">
+                    <h3>Cleaning and imputation</h3>
+                    <ul>
+                        <li>Yearly records were grouped into decades, because single years are
+                        dominated by whichever big event happened to fall in them.</li>
+                        <li>Aggregate rows (World, continents, income groups) were separated from
+                        country rows; only countries with a standard ISO 3166 code appear on the map.</li>
+                        <li>Missing values stay missing. They render as "no data" and were never
+                        filled in, interpolated or guessed.</li>
+                    </ul>
+                </article>
+
+                <article class="method-card">
+                    <h3>Processing pipeline</h3>
+                    <ol>
+                        <li>Download the raw CSV and its metadata for each indicator from the
+                        Our World in Data API.</li>
+                        <li>Clean and aggregate with one pandas script,
+                        <code>preprocessing/clean_data.py</code>.</li>
+                        <li>Write one small JSON file per chart into <code>data/</code>.</li>
+                        <li>The page loads those files directly with D3. There is no server and
+                        no database.</li>
+                    </ol>
+                </article>
+
+                <article class="method-card limitations">
+                    <h3>Limitations</h3>
+                    <ul>
+                        <li>EM-DAT's coverage improved a great deal after the 1980s. Early decades
+                        undercount smaller events, which inflates the apparent rise in disaster
+                        counts.</li>
+                        <li>The 2020s are incomplete (2020 to 2025). Every chart flags this decade
+                        as partial.</li>
+                        <li>Historical famine deaths are estimates. Numbers in the millions carry
+                        wide uncertainty, even though the overall pattern is not in doubt.</li>
+                        <li>On the map, one catastrophic event can dominate a country's decade
+                        average. A dark country is not always a chronically dangerous one.</li>
+                    </ul>
+                    <p class="callout">Anything before 1980 deserves extra caution. The story's
+                    core claim, the fall in death rates, is large enough to survive these caveats.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- team: one member, so a strip rather than a full section -->
+    <section class="team-strip" id="team">
+        <div class="container">
+            <div class="team-avatar" aria-hidden="true">M</div>
+            <p class="team-line"><strong>Maryam Hajishah</strong> &middot; solo project:
+            data collection, preprocessing, visualization and design.</p>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <h4>The Quiet Victory</h4>
+                <p>A university data-visualization project on long-run trends in natural
+                disaster deaths, built with D3.js.</p>
+            </div>
+            <div>
+                <h4>Data</h4>
+                <ul>
+                    <li><a href="https://www.emdat.be/" target="_blank" rel="noopener">EM-DAT</a></li>
+                    <li><a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">Our World in Data</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Project</h4>
+                <ul>
+                    <li><a href="#methodology">Methodology</a></li>
+                    <li><a href="README.md">README and how to run</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>Built for a university course on data-driven storytelling.</span>
+            <span>Data: EM-DAT / CRED via Our World in Data, CC BY 4.0.</span>
+        </div>
+    </div>
+</footer>
+
+<div class="chart-tooltip" id="chart-tooltip"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/topojson.v3.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
