@@ -4,7 +4,7 @@ A data-driven scrollytelling website on a century of natural disasters, built
 with D3.js and EM-DAT data.
 
 **Course**: Data Visualization
-**Team**: Maryam Hajishah (solo): data collection, preprocessing, visualization and design
+**Team**: Maryam Hajishah: data collection, preprocessing, visualization and design
 **Live site**: add the GitHub Pages URL here after deploying
 
 ---
