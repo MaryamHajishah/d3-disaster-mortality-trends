@@ -35,6 +35,18 @@ export function observeResize(container, draw) {
 
 export const formatDecade = (d) => `${d}s`;
 
+// Reader-facing names for EM-DAT's category labels. The two source datasets
+// name the same hazard differently ("Storms" vs "Extreme weather", confirmed
+// equivalent in the OWID metadata), and "extreme temperature" reads like
+// jargon, so tooltips translate before display.
+const TYPE_LABELS = {
+    'Extreme weather': 'Storms',
+    'Extreme temperature': 'Heat and cold waves',
+    'Extreme temperatures': 'Heat and cold waves',
+    'Volcanic activity': 'Volcanoes',
+};
+export const typeLabel = (key) => TYPE_LABELS[key] ?? key;
+
 // Every categorical color sits in the same dusty, low-saturation family.
 // Drought gets the sienna and extreme temperature gets the ochre on purpose:
 // those two are the stars of chapters two and three.

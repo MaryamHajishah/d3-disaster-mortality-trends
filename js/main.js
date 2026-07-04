@@ -12,6 +12,9 @@ import {
     renderDeathsByTypeChart,
     renderHeatChart,
     renderDisasterMap,
+    colorForType,
+    colorForEventType,
+    typeLabel,
 } from './charts/index.js';
 
 // Chapter accents step through the dry scale so the page darkens as the
@@ -59,12 +62,32 @@ async function main() {
         },
     };
 
+    // legend entries per chart; the map draws its own legend inside the svg
+    // and the heat chart is a single named series, so both leave this empty
+    const eventKeys = Object.keys(data.events.series).filter((k) => k !== 'All disasters');
+    const deathKeys = Object.keys(data.deathsByType.by_type);
+    const legends = {
+        events: eventKeys.map((k) => ({ label: typeLabel(k), color: colorForEventType(k) })),
+        deathsAll: deathKeys.map((k) => ({ label: typeLabel(k), color: colorForType(k) })),
+        deathsDrought: deathKeys.map((k) => ({
+            label: typeLabel(k),
+            color: colorForType(k),
+            faded: k !== 'Droughts',
+        })),
+        deathRate: [
+            { label: 'All disasters (world total)', color: '#5f7d6c' },
+            { label: 'Individual disaster types', color: '#cfc8bb' },
+        ],
+        heat: [],
+        map: [],
+    };
+
     const meta = {
         events: { title: 'Recorded disasters per decade, by type', unit: 'events per decade' },
         deathRate: { title: 'Global deaths from natural disasters', unit: 'deaths per 100,000 people' },
         deathsAll: { title: 'Deaths per decade, by disaster type', unit: 'people' },
         deathsDrought: { title: 'Drought deaths per decade', unit: 'people' },
-        heat: { title: 'Deaths from extreme temperatures', unit: 'people per decade' },
+        heat: { title: 'Deaths from heat and cold waves', unit: 'people per decade' },
         map: { title: 'Decade-average death rate by country', unit: 'deaths per 100,000 people' },
     };
 
@@ -75,6 +98,7 @@ async function main() {
 
         chartTitle.textContent = meta[chartKey].title;
         chartUnit.textContent = meta[chartKey].unit;
+        renderLegend(legends[chartKey]);
 
         const theme = CHAPTERS[chapter];
         if (theme && visualPanel) {
@@ -149,6 +173,16 @@ function renderHeroStats(data) {
 function setText(id, value) {
     const el = document.getElementById(id);
     if (el) el.textContent = value;
+}
+
+function renderLegend(items) {
+    const legend = document.getElementById('chart-legend');
+    if (!legend) return;
+    legend.innerHTML = (items || []).map((item) => `
+        <span class="legend-item"${item.faded ? ' style="opacity:0.45"' : ''}>
+            <span class="legend-swatch" style="background:${item.color}"></span>${item.label}
+        </span>
+    `).join('');
 }
 
 function renderSourceList(sources) {

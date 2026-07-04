@@ -1,4 +1,4 @@
-import { mountSVG, size, observeResize, formatDecade, colorForEventType } from './baseChart.js';
+import { mountSVG, size, observeResize, formatDecade, colorForEventType, typeLabel } from './baseChart.js';
 
 const KEYS = ['Drought', 'Earthquake', 'Extreme weather', 'Flood', 'Landslide', 'Volcanic activity', 'Wildfire', 'Extreme temperature'];
 
@@ -40,7 +40,7 @@ export function renderEventsChart(container, data, tooltip) {
             .on('pointermove', (event, d) => {
                 const value = d[1] - d[0];
                 tooltip.show(
-                    `<strong>${d.key} &middot; ${formatDecade(d.data.decade)}</strong>${value.toLocaleString()} events`,
+                    `<strong>${typeLabel(d.key)} &middot; ${formatDecade(d.data.decade)}</strong>${value.toLocaleString()} events`,
                     event.clientX, event.clientY
                 );
             })
@@ -50,9 +50,9 @@ export function renderEventsChart(container, data, tooltip) {
             const px = x(data.partial_decade);
             if (px != null) {
                 g.append('text')
-                    .attr('x', px + x.bandwidth() / 2).attr('y', -6)
-                    .attr('text-anchor', 'middle').attr('class', 'axis')
-                    .text('partial');
+                    .attr('x', px + x.bandwidth()).attr('y', -6)
+                    .attr('text-anchor', 'end').attr('class', 'axis')
+                    .text('2020 to 2025 only');
             }
         }
     };

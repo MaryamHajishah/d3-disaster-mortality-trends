@@ -3,7 +3,7 @@
 // reader can follow one story (famine deaths disappearing) inside the same
 // chart they just saw.
 
-import { mountSVG, size, observeResize, formatDecade, colorForType } from './baseChart.js';
+import { mountSVG, size, observeResize, formatDecade, colorForType, typeLabel } from './baseChart.js';
 
 export function renderDeathsByTypeChart(container, data, tooltip, options = {}) {
     const { highlight = null } = options;
@@ -46,11 +46,21 @@ export function renderDeathsByTypeChart(container, data, tooltip, options = {}) 
             .on('pointermove', (event, d) => {
                 const value = d[1] - d[0];
                 tooltip.show(
-                    `<strong>${d.key} &middot; ${formatDecade(d.data.decade)}</strong>${Math.round(value).toLocaleString()} deaths`,
+                    `<strong>${typeLabel(d.key)} &middot; ${formatDecade(d.data.decade)}</strong>${Math.round(value).toLocaleString()} deaths`,
                     event.clientX, event.clientY
                 );
             })
             .on('pointerleave', () => tooltip.hide());
+
+        if (data.partial_decade) {
+            const px = x(data.partial_decade);
+            if (px != null) {
+                g.append('text')
+                    .attr('x', px + x.bandwidth()).attr('y', -6)
+                    .attr('text-anchor', 'end').attr('class', 'axis')
+                    .text('2020 to 2025 only');
+            }
+        }
     };
 
     draw();

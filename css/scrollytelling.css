@@ -89,6 +89,8 @@
     width: 100%;
     max-width: 760px;
     height: min(560px, 80vh);
+    display: flex;
+    flex-direction: column;
     background: var(--paper-raised);
     border: 1px solid var(--ink-100);
     border-top: 4px solid var(--chapter-color, var(--accent));
@@ -99,15 +101,11 @@
     transition: border-color var(--ease);
 }
 
-.story-visual-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-2xs);
-}
-.story-visual-title { font-family: var(--font-display); font-size: var(--step-0); font-weight: 700; }
-.story-visual-unit { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-500); white-space: nowrap; }
+/* title with the unit right under it, top left, so the unit reads as the
+   label of the y axis directly below */
+.story-visual-head { margin-bottom: var(--space-2xs); }
+.story-visual-title { display: block; font-family: var(--font-display); font-size: var(--step-0); font-weight: 700; }
+.story-visual-unit { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-500); margin-top: 2px; }
 
 /* controls hosted inside a step card, like the map decade toggle */
 .story-control { margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--ink-100); }
@@ -145,10 +143,13 @@
     flex-direction: column;
     gap: var(--space-xs);
 }
+/* labels sit above their dash so the rail stays narrow, and the label gets
+   a paper pill so it stays readable if it floats over the chart panel */
 .chapter-rail a {
     display: flex;
-    align-items: center;
-    gap: var(--space-2xs);
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
     text-decoration: none;
     color: var(--ink-500);
     font-size: 0.75rem;
@@ -156,7 +157,7 @@
     opacity: 0.75;
     transition: color var(--ease), opacity var(--ease);
 }
-.chapter-rail a::before {
+.chapter-rail a::after {
     content: '';
     width: 18px;
     height: 3px;
@@ -168,13 +169,20 @@
     color: var(--rail-color, var(--accent));
     opacity: 1;
 }
-.chapter-rail a.is-active::before {
+.chapter-rail a.is-active::after {
     background: var(--rail-color, var(--accent));
     width: 28px;
 }
-.chapter-rail .rail-label { display: none; }
+.chapter-rail .rail-label {
+    display: none;
+    background: rgba(246, 242, 234, 0.95);
+    border: 1px solid var(--ink-100);
+    border-radius: var(--radius-sm);
+    padding: 1px 6px;
+    white-space: nowrap;
+}
 .chapter-rail a.is-active .rail-label,
-.chapter-rail a:hover .rail-label { display: inline; }
+.chapter-rail a:hover .rail-label { display: inline-block; }
 
 /* progress bar under the header */
 .story-progress {

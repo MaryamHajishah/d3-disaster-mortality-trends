@@ -52,7 +52,7 @@ export function renderHeatChart(container, data, tooltip) {
                 const i = values.indexOf(v);
                 const suffix = data.partial_decade === decades[i] ? ' (partial decade)' : '';
                 tooltip.show(
-                    `<strong>${formatDecade(decades[i])}${suffix}</strong>${v.toLocaleString()} deaths from extreme temperatures`,
+                    `<strong>${formatDecade(decades[i])}${suffix}</strong>${v.toLocaleString()} deaths from heat and cold waves`,
                     event.clientX, event.clientY
                 );
             })
@@ -64,8 +64,8 @@ export function renderHeatChart(container, data, tooltip) {
             if (px != null) {
                 g.append('text')
                     .attr('x', px).attr('y', -8)
-                    .attr('text-anchor', 'middle').attr('class', 'axis')
-                    .text('partial');
+                    .attr('text-anchor', 'end').attr('class', 'axis')
+                    .text('2020 to 2025 only');
             }
         }
     };
