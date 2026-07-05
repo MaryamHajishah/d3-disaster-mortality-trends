@@ -1,4 +1,4 @@
-import { mountSVG, size, observeResize, formatDecade, colorForEventType, typeLabel } from './baseChart.js';
+import { mountSVG, size, observeResize, formatDecade, colorForEventType, typeLabel, hatchFill, decadeTickFormat } from './baseChart.js';
 
 const KEYS = ['Drought', 'Earthquake', 'Extreme weather', 'Flood', 'Landslide', 'Volcanic activity', 'Wildfire', 'Extreme temperature'];
 
@@ -10,8 +10,8 @@ export function renderEventsChart(container, data, tooltip) {
     });
 
     const draw = () => {
-        const { width, height, innerWidth, innerHeight } = size(container);
-        const { g } = mountSVG(container);
+        const { innerWidth, innerHeight } = size(container);
+        const { svg, g } = mountSVG(container);
 
         const x = d3.scaleBand().domain(rows.map((d) => d.decade)).range([0, innerWidth]).padding(0.12);
         const stacked = d3.stack().keys(KEYS)(rows);
@@ -24,7 +24,7 @@ export function renderEventsChart(container, data, tooltip) {
             .attr('x1', 0).attr('x2', innerWidth).attr('y1', y).attr('y2', y);
 
         g.append('g').attr('class', 'axis').attr('transform', `translate(0,${innerHeight})`)
-            .call(d3.axisBottom(x).tickValues(x.domain().filter((_, i) => i % 2 === 0)).tickFormat(formatDecade).tickSizeOuter(0));
+            .call(d3.axisBottom(x).tickValues(x.domain().filter((_, i) => i % 2 === 0)).tickFormat(decadeTickFormat(data.partial_decade)).tickSizeOuter(0));
 
         g.append('g').attr('class', 'axis').call(d3.axisLeft(y).ticks(5));
 
@@ -46,13 +46,17 @@ export function renderEventsChart(container, data, tooltip) {
             })
             .on('pointerleave', () => tooltip.hide());
 
+        // stripe the incomplete decade's bar instead of labeling it with text
         if (data.partial_decade) {
+            const i = rows.findIndex((r) => r.decade === data.partial_decade);
             const px = x(data.partial_decade);
-            if (px != null) {
-                g.append('text')
-                    .attr('x', px + x.bandwidth()).attr('y', -6)
-                    .attr('text-anchor', 'end').attr('class', 'axis')
-                    .text('2020 to 2025 only');
+            if (i !== -1 && px != null) {
+                const barTop = stacked[stacked.length - 1][i][1];
+                g.append('rect')
+                    .attr('x', px).attr('width', x.bandwidth())
+                    .attr('y', y(barTop)).attr('height', Math.max(0, innerHeight - y(barTop)))
+                    .attr('fill', hatchFill(svg))
+                    .attr('pointer-events', 'none');
             }
         }
     };

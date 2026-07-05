@@ -47,6 +47,28 @@ const TYPE_LABELS = {
 };
 export const typeLabel = (key) => TYPE_LABELS[key] ?? key;
 
+// Diagonal hatch overlay used to mark incomplete-period bars, the same way
+// newspapers stripe provisional data. Returns a fill url for a rect drawn
+// on top of the bar.
+export function hatchFill(svg, id = 'partial-hatch') {
+    const pattern = svg.append('defs')
+        .append('pattern')
+        .attr('id', id)
+        .attr('width', 6).attr('height', 6)
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('patternTransform', 'rotate(45)');
+    pattern.append('line')
+        .attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 6)
+        .attr('stroke', 'rgba(255, 255, 255, 0.55)')
+        .attr('stroke-width', 2.5);
+    return `url(#${id})`;
+}
+
+// Axis tick formatter that stars the incomplete decade; the matching
+// "* 2020 to 2025 only" footnote renders in the legend strip.
+export const decadeTickFormat = (partial) => (d) =>
+    `${formatDecade(d)}${d === partial ? '*' : ''}`;
+
 // Every categorical color sits in the same dusty, low-saturation family.
 // Drought gets the sienna and extreme temperature gets the ochre on purpose:
 // those two are the stars of chapters two and three.

@@ -12,6 +12,7 @@ import {
     renderDeathsByTypeChart,
     renderHeatChart,
     renderDisasterMap,
+    mapLegendBins,
     colorForType,
     colorForEventType,
     typeLabel,
@@ -57,8 +58,8 @@ async function main() {
         deathsDrought: () => renderDeathsByTypeChart(chartSlot, data.deathsByType, tooltip, { highlight: 'Droughts' }),
         heat: () => renderHeatChart(chartSlot, data.deathsByType, tooltip),
         map: async () => {
-            mapController = await renderDisasterMap(chartSlot, data.countryMap, tooltip);
-            setupMapToggle(mapController);
+            mapController = await renderDisasterMap(chartSlot, data.countryMap, tooltip, { world: data.deathRate });
+            setupMapControls(mapController, data.countryMap);
         },
     };
 
@@ -66,20 +67,25 @@ async function main() {
     // and the heat chart is a single named series, so both leave this empty
     const eventKeys = Object.keys(data.events.series).filter((k) => k !== 'All disasters');
     const deathKeys = Object.keys(data.deathsByType.by_type);
+    const partialNote = { label: '* 2020 to 2025 only', note: true };
     const legends = {
-        events: eventKeys.map((k) => ({ label: typeLabel(k), color: colorForEventType(k) })),
-        deathsAll: deathKeys.map((k) => ({ label: typeLabel(k), color: colorForType(k) })),
-        deathsDrought: deathKeys.map((k) => ({
-            label: typeLabel(k),
-            color: colorForType(k),
-            faded: k !== 'Droughts',
-        })),
+        events: [...eventKeys.map((k) => ({ label: typeLabel(k), color: colorForEventType(k) })), partialNote],
+        deathsAll: [...deathKeys.map((k) => ({ label: typeLabel(k), color: colorForType(k) })), partialNote],
+        deathsDrought: [
+            ...deathKeys.map((k) => ({
+                label: typeLabel(k),
+                color: colorForType(k),
+                faded: k !== 'Droughts',
+            })),
+            partialNote,
+        ],
         deathRate: [
             { label: 'All disasters (world total)', color: '#5f7d6c' },
             { label: 'Individual disaster types', color: '#cfc8bb' },
+            partialNote,
         ],
-        heat: [],
-        map: [],
+        heat: [partialNote],
+        map: mapLegendBins(),
     };
 
     const meta = {
@@ -94,7 +100,11 @@ async function main() {
     async function activate(chartKey, chapter) {
         if (currentChart === chartKey) return;
         currentChart = chartKey;
-        if (mapController) { mapController.destroy(); mapController = null; }
+        if (mapController) {
+            stopMapPlayback();
+            mapController.destroy();
+            mapController = null;
+        }
 
         chartTitle.textContent = meta[chartKey].title;
         chartUnit.textContent = meta[chartKey].unit;
@@ -139,16 +149,59 @@ async function main() {
     activate('events', 'expect');
 }
 
-function setupMapToggle(controller) {
-    const buttons = document.querySelectorAll('.decade-btn');
-    buttons.forEach((btn) => {
-        btn.onclick = () => {
-            buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
-            controller.setDecade(Number(btn.dataset.decade));
-        };
-    });
-    const active = document.querySelector('.decade-btn.is-active');
-    if (active) controller.setDecade(Number(active.dataset.decade));
+let mapPlayTimer = null;
+
+function stopMapPlayback() {
+    if (mapPlayTimer) {
+        clearInterval(mapPlayTimer);
+        mapPlayTimer = null;
+    }
+    const playBtn = document.getElementById('map-play');
+    if (playBtn) playBtn.textContent = 'Play';
+}
+
+function setupMapControls(controller, mapData) {
+    const slider = document.getElementById('map-decade-slider');
+    const label = document.getElementById('map-decade-label');
+    const playBtn = document.getElementById('map-play');
+    if (!slider) return;
+
+    stopMapPlayback();
+    slider.min = 0;
+    slider.max = mapData.decades.length - 1;
+
+    const apply = () => {
+        const decade = mapData.decades[Number(slider.value)];
+        label.textContent = `${decade}s${mapData.partial_decade === decade ? ' (2020 to 2025)' : ''}`;
+        controller.setDecade(decade);
+    };
+
+    slider.oninput = () => {
+        stopMapPlayback();
+        apply();
+    };
+
+    // sweeps through the century, one decade per beat, then stops at the end
+    playBtn.onclick = () => {
+        if (mapPlayTimer) {
+            stopMapPlayback();
+            return;
+        }
+        if (Number(slider.value) >= mapData.decades.length - 1) slider.value = 0;
+        apply();
+        playBtn.textContent = 'Pause';
+        mapPlayTimer = setInterval(() => {
+            const next = Number(slider.value) + 1;
+            if (next > mapData.decades.length - 1) {
+                stopMapPlayback();
+                return;
+            }
+            slider.value = next;
+            apply();
+        }, 900);
+    };
+
+    apply();
 }
 
 // The hero numbers are computed from the data rather than typed in, so they
@@ -178,11 +231,12 @@ function setText(id, value) {
 function renderLegend(items) {
     const legend = document.getElementById('chart-legend');
     if (!legend) return;
-    legend.innerHTML = (items || []).map((item) => `
-        <span class="legend-item"${item.faded ? ' style="opacity:0.45"' : ''}>
+    legend.innerHTML = (items || []).map((item) => item.note
+        ? `<span class="legend-item legend-note">${item.label}</span>`
+        : `<span class="legend-item"${item.faded ? ' style="opacity:0.45"' : ''}>
             <span class="legend-swatch" style="background:${item.color}"></span>${item.label}
-        </span>
-    `).join('');
+        </span>`
+    ).join('');
 }
 
 function renderSourceList(sources) {

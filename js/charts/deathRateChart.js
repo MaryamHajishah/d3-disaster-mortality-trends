@@ -2,7 +2,7 @@
 // The total line is drawn in sage because falling deaths is the one
 // "good news" series on the site; everything else stays grey.
 
-import { mountSVG, size, observeResize, formatDecade } from './baseChart.js';
+import { mountSVG, size, observeResize, formatDecade, decadeTickFormat } from './baseChart.js';
 
 const LINE_COLOR = '#5f7d6c';
 const CONTEXT_COLOR = '#cfc8bb';
@@ -24,7 +24,7 @@ export function renderDeathRateChart(container, data, tooltip) {
             .attr('x1', 0).attr('x2', innerWidth).attr('y1', y).attr('y2', y);
 
         g.append('g').attr('class', 'axis').attr('transform', `translate(0,${innerHeight})`)
-            .call(d3.axisBottom(x).tickValues(decades.filter((_, i) => i % 2 === 0)).tickFormat(formatDecade));
+            .call(d3.axisBottom(x).tickValues(decades.filter((_, i) => i % 2 === 0)).tickFormat(decadeTickFormat(data.partial_decade)));
         g.append('g').attr('class', 'axis').call(d3.axisLeft(y).ticks(5));
 
         const line = d3.line().x((_, i) => x(decades[i])).y((v) => y(v));
@@ -39,19 +39,38 @@ export function renderDeathRateChart(container, data, tooltip) {
                 .attr('d', line);
         });
 
+        // the segment into the incomplete decade is dashed, newspaper style
+        const isPartialEnd = data.partial_decade === decades[decades.length - 1];
+        const solidValues = isPartialEnd ? data.total.slice(0, -1) : data.total;
+
         g.append('path')
-            .datum(data.total)
+            .datum(solidValues)
             .attr('fill', 'none')
             .attr('stroke', LINE_COLOR)
             .attr('stroke-width', 3)
             .attr('d', line);
+
+        if (isPartialEnd) {
+            const n = decades.length;
+            g.append('path')
+                .datum(data.total.slice(n - 2))
+                .attr('fill', 'none')
+                .attr('stroke', LINE_COLOR)
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5 4')
+                .attr('d', d3.line()
+                    .x((_, i) => x(decades[n - 2 + i]))
+                    .y((v) => y(v)));
+        }
 
         g.selectAll('.dot').data(data.total).join('circle')
             .attr('class', 'dot')
             .attr('cx', (_, i) => x(decades[i]))
             .attr('cy', (v) => y(v))
             .attr('r', 4)
-            .attr('fill', LINE_COLOR)
+            .attr('fill', (_, i) => (isPartialEnd && i === data.total.length - 1 ? '#ffffff' : LINE_COLOR))
+            .attr('stroke', LINE_COLOR)
+            .attr('stroke-width', (_, i) => (isPartialEnd && i === data.total.length - 1 ? 2 : 0))
             .on('pointermove', (event, v) => {
                 const i = data.total.indexOf(v);
                 const suffix = data.partial_decade === decades[i] ? ' (partial decade)' : '';

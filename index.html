@@ -168,14 +168,19 @@
                     <div class="story-card">
                         <span class="chapter-tag">03 &middot; The new threat</span>
                         <h3>Progress, seen from above</h3>
-                        <p>Compare the 1980s with the 2020s: most of the map gets lighter. The
-                        lesson of the last century is that preparation works. The lesson of this
-                        one may be that it has to keep working, because heat is a new test of old
-                        defenses.</p>
+                        <p>Press play and watch the century sweep by: the catastrophic dark
+                        patches of the famine decades appear, move, and then vanish. What
+                        remains today is a wide scatter of far lower rates. Not every country
+                        moves down, and recent upticks in wealthy regions come mostly from
+                        heat, but the extremes of the early century are gone.</p>
+                        <p>Click any country to compare its own path with the world average.</p>
                         <div class="story-control" role="group" aria-label="Choose a decade to display">
-                            <span class="control-label">Decade shown on the map</span>
-                            <button type="button" class="decade-btn" data-decade="1980">1980s</button>
-                            <button type="button" class="decade-btn is-active" data-decade="2020">2020s (partial)</button>
+                            <label class="control-label" for="map-decade-slider">Decade:
+                                <span id="map-decade-label">2020s</span></label>
+                            <input type="range" id="map-decade-slider" min="0" max="12" step="1" value="12">
+                            <button type="button" class="decade-btn" id="map-play">Play</button>
+                            <p class="control-hint">Double-click the map to zoom, drag to pan,
+                            Ctrl + scroll to zoom with the wheel.</p>
                         </div>
                     </div>
                 </article>

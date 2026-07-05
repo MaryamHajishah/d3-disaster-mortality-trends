@@ -35,6 +35,11 @@
     .roadmap-chip .chip-label { font-size: 0.8125rem; }
 }
 
+@media (max-width: 700px) {
+    /* not enough room for the comparison panel next to the map */
+    .map-aside { display: none; }
+}
+
 /* larger tap targets on touch devices */
 @media (pointer: coarse) {
     .decade-btn { padding: var(--space-xs) var(--space-md); }

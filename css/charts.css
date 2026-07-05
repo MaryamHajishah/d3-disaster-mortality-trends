@@ -24,6 +24,39 @@
     border-radius: 2px;
     flex-shrink: 0;
 }
+.legend-note {
+    font-style: italic;
+    color: var(--ink-500);
+    margin-left: auto;
+}
+
+/* map step: map pane plus the click-a-country comparison panel */
+.map-layout {
+    display: flex;
+    gap: var(--space-sm);
+    height: 100%;
+    min-height: 0;
+}
+.map-main { flex: 1; min-width: 0; }
+.map-main svg { cursor: grab; }
+.map-main svg:active { cursor: grabbing; }
+.country { cursor: pointer; vector-effect: non-scaling-stroke; }
+
+.map-aside {
+    flex: 0 0 230px;
+    border-left: 1px solid var(--ink-100);
+    padding-left: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    font-size: 0.8125rem;
+    color: var(--ink-700);
+}
+.map-aside h4 { font-size: 0.9375rem; }
+.map-aside .aside-sub { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-500); }
+.map-aside .aside-hint { color: var(--ink-500); }
+.map-aside .aside-value strong { color: var(--accent); }
+.map-aside svg { width: 100%; height: auto; }
 
 .axis text { font-family: var(--font-mono); font-size: 0.6875rem; fill: var(--ink-500); }
 .axis path, .axis line { stroke: var(--ink-300); }

@@ -132,6 +132,18 @@
     color: var(--paper-raised);
 }
 
+.story-control input[type="range"] {
+    width: 65%;
+    vertical-align: middle;
+    margin-right: var(--space-2xs);
+    accent-color: var(--accent);
+}
+.control-hint {
+    margin-top: var(--space-2xs);
+    font-size: 0.75rem;
+    color: var(--ink-500);
+}
+
 /* chapter rail: fixed mini nav that mirrors the hero roadmap while scrolling */
 .chapter-rail {
     position: fixed;
