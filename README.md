@@ -3,8 +3,11 @@
 A data-driven scrollytelling website about a century of natural disasters, built with D3.js on EM-DAT data.
 
 **Course**: Data Visualization, University of Genova (2025/2026)
+
 **Team**: Maryam Hajishah (data collection, preprocessing, visualization, and design)
+
 **Live site**: https://maryamhajishah.github.io/d3-disaster-mortality-trends/
+
 **Repository**: https://github.com/MaryamHajishah/d3-disaster-mortality-trends
 
 ---
@@ -18,7 +21,7 @@ The narrative runs across three chapters and six scroll steps, one chart per ste
 1. Stacked bars of recorded events per decade
 2. The falling global death rate
 3. Deaths by disaster type
-4. The same chart again, with the drought layer highlighted
+4. The drought share of those deaths, highlighted against the other types
 5. A rising line for extreme-temperature deaths
 6. A country choropleth with a decade toggle
 
@@ -63,7 +66,7 @@ d3-disaster-mortality-trends/
 │       ├── baseChart.js             # shared mounting, sizing, and color scales
 │       ├── eventsChart.js           # step 1: recorded events per decade
 │       ├── deathRateChart.js        # step 2: the falling death rate
-│       ├── deathsByTypeChart.js     # steps 3 and 4: deaths stacked by type
+│       ├── deathsByTypeChart.js     # deaths by disaster type, with drought highlight
 │       ├── heatChart.js             # step 5: extreme-temperature deaths
 │       └── disasterMap.js           # step 6: choropleth with decade toggle
 ├── data/
@@ -123,10 +126,6 @@ python -m http.server 8000
 ```
 
 Any other static server works too.
-
-## Deploying to GitHub Pages
-
-Push the folder to a public repo and enable Pages on the `master` branch, root directory. The site is already static, so there is nothing to build.
 
 ## Tech stack
 
