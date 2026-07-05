@@ -135,4 +135,10 @@ Any other static server works too.
 
 ## Limitations
 
-The methodology section on the site has the full list. In short: EM-DAT's coverage improved a great deal after the 1980s, so early decades undercount smaller events, and part of the rise in disaster *counts* reflects better reporting rather than more disasters. The 2020s are incomplete (2020 to 2025) and flagged as partial wherever they appear. Historical famine death tolls are rough estimates. None of this threatens the central claim, because the collapse in death rates is far too large to be an artifact of reporting.
+The site's methodology section documents these in full. The main constraints are:
+
+- **Reporting bias over time.** EM-DAT's coverage improved substantially after the 1980s, so earlier decades undercount smaller events. Part of the apparent rise in disaster *counts* therefore reflects more complete reporting rather than a genuine increase in events.
+- **Incomplete current decade.** The 2020s cover only 2020 to 2025 and are marked as partial wherever they appear, so they should not be read as a finished decade.
+- **Uncertain historical estimates.** Death tolls for early famines are approximate and carry wide margins of error.
+
+These caveats affect the precision of individual figures but not the central finding. The decline in death rates, roughly 93 percent across the century, is far too large to be explained by improved reporting alone.
