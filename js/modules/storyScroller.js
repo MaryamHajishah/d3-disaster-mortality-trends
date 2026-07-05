@@ -5,9 +5,10 @@
 // even in embedded views that throttle animation frames.
 
 export class StoryScroller {
-    constructor({ steps, onEnter, onProgress }) {
+    constructor({ steps, onEnter, onExit, onProgress }) {
         this.steps = Array.from(document.querySelectorAll(steps));
         this.onEnter = onEnter;
+        this.onExit = onExit;
         this.onProgress = onProgress;
         this.current = -1;
 
@@ -41,7 +42,21 @@ export class StoryScroller {
             if (rect.top <= midpoint && rect.bottom >= midpoint) index = i;
         });
 
-        if (index !== -1 && index !== this.current) {
+        // are we within the story's vertical span at all? in the gaps between
+        // steps we keep the current chapter, but once the midpoint is past the
+        // last step (into the methodology section) or above the first step,
+        // clear the active chapter so the rail goes grey
+        const firstTop = this.steps[0].getBoundingClientRect().top;
+        const lastBottom = this.steps[this.steps.length - 1].getBoundingClientRect().bottom;
+        const insideStory = midpoint >= firstTop && midpoint <= lastBottom;
+
+        if (!insideStory) {
+            if (this.current !== -1) {
+                this.current = -1;
+                this.steps.forEach((s) => s.classList.remove('is-active'));
+                this.onExit?.();
+            }
+        } else if (index !== -1 && index !== this.current) {
             this.current = index;
             this.steps.forEach((s, i) => s.classList.toggle('is-active', i === index));
             this.onEnter?.(this.steps[index], index);

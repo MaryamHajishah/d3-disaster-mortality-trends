@@ -10,6 +10,7 @@ import {
     renderEventsChart,
     renderDeathRateChart,
     renderDeathsByTypeChart,
+    renderDroughtChart,
     renderHeatChart,
     renderDisasterMap,
     mapLegendBins,
@@ -55,7 +56,7 @@ async function main() {
         events: () => renderEventsChart(chartSlot, data.events, tooltip),
         deathRate: () => renderDeathRateChart(chartSlot, data.deathRate, tooltip),
         deathsAll: () => renderDeathsByTypeChart(chartSlot, data.deathsByType, tooltip),
-        deathsDrought: () => renderDeathsByTypeChart(chartSlot, data.deathsByType, tooltip, { highlight: 'Droughts' }),
+        deathsDrought: () => renderDroughtChart(chartSlot, data.deathsByType, tooltip),
         heat: () => renderHeatChart(chartSlot, data.deathsByType, tooltip),
         map: async () => {
             mapController = await renderDisasterMap(chartSlot, data.countryMap, tooltip, { world: data.deathRate });
@@ -72,11 +73,7 @@ async function main() {
         events: [...eventKeys.map((k) => ({ label: typeLabel(k), color: colorForEventType(k) })), partialNote],
         deathsAll: [...deathKeys.map((k) => ({ label: typeLabel(k), color: colorForType(k) })), partialNote],
         deathsDrought: [
-            ...deathKeys.map((k) => ({
-                label: typeLabel(k),
-                color: colorForType(k),
-                faded: k !== 'Droughts',
-            })),
+            { label: 'Drought deaths', color: colorForType('Droughts') },
             partialNote,
         ],
         deathRate: [
@@ -92,7 +89,7 @@ async function main() {
         events: { title: 'Recorded disasters per decade, by type', unit: 'events per decade' },
         deathRate: { title: 'Global deaths from natural disasters', unit: 'deaths per 100,000 people' },
         deathsAll: { title: 'Deaths per decade, by disaster type', unit: 'people' },
-        deathsDrought: { title: 'Drought deaths per decade', unit: 'people' },
+        deathsDrought: { title: 'Drought and famine deaths per decade', unit: 'people' },
         heat: { title: 'Deaths from heat and cold waves', unit: 'people per decade' },
         map: { title: 'Decade-average death rate by country', unit: 'deaths per 100,000 people' },
     };
@@ -139,6 +136,7 @@ async function main() {
             updateRail(chapter);
             activate(stepEl.dataset.chart, chapter);
         },
+        onExit: () => updateRail(null),
         onProgress: (progress) => {
             const fill = document.querySelector('.story-progress-fill');
             if (fill) fill.style.width = `${progress * 100}%`;

@@ -229,6 +229,11 @@
                         country rows; only countries with a standard ISO 3166 code appear on the map.</li>
                         <li>Missing values stay missing. They render as "no data" and were never
                         filled in, interpolated or guessed.</li>
+                        <li>The source fills every country-decade with a number, using 0 both for a
+                        recorded zero and for a country it never covered that decade. We use the
+                        sparse annual records to tell them apart: a 0 with no underlying record
+                        becomes "no data", so an unrecorded gap is never drawn as a confident zero.
+                        Afghanistan before 1954 is one example.</li>
                     </ul>
                 </article>
 

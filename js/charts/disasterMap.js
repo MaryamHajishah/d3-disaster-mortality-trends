@@ -74,7 +74,7 @@ export async function renderDisasterMap(container, mapData, tooltip, options = {
                 const rate = entry?.rates?.[String(currentDecade)];
                 const label = entry ? entry.name : (d.properties?.name ?? 'Unknown');
                 const text = rate == null
-                    ? 'No recorded disaster deaths this decade'
+                    ? 'No EM-DAT records for this decade'
                     : `${rate.toFixed(2)} deaths per 100,000 people`;
                 tooltip.show(`<strong>${label} &middot; ${formatDecade(currentDecade)}</strong>${text}<br>Click for this country's history`, event.clientX, event.clientY);
             })
@@ -185,9 +185,13 @@ export async function renderDisasterMap(container, mapData, tooltip, options = {
 
         const nowRate = entry.rates[String(currentDecade)];
         aside.append('p').attr('class', 'aside-value')
-            .html(`${formatDecade(currentDecade)}: <strong>${nowRate == null ? 'no recorded deaths' : nowRate.toFixed(2)}</strong>`);
-        aside.append('p').attr('class', 'aside-hint')
-            .text('Sienna: this country. Grey: world average.');
+            .html(`${formatDecade(currentDecade)}: <strong>${nowRate == null ? 'no records' : nowRate.toFixed(2)}</strong>`);
+
+        // a small line-swatch legend reads clearer than describing the colors
+        aside.append('div').attr('class', 'aside-legend').html(`
+            <span class="legend-item"><span class="line-swatch" style="background:#a05c3b"></span>${entry.name}</span>
+            <span class="legend-item"><span class="line-swatch" style="background:#cfc8bb"></span>World average</span>
+        `);
     };
 
     draw();

@@ -10,7 +10,9 @@ export function renderDeathsByTypeChart(container, data, tooltip, options = {}) 
     const keys = Object.keys(data.by_type);
     const rows = data.decades.map((decade, i) => {
         const row = { decade };
-        keys.forEach((k) => { row[k] = data.by_type[k][i]; });
+        // a null means "no record that decade"; for a stacked bar the honest
+        // rendering is no height, so null becomes 0 here
+        keys.forEach((k) => { row[k] = data.by_type[k][i] ?? 0; });
         return row;
     });
 

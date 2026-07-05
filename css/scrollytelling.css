@@ -155,34 +155,38 @@
     flex-direction: column;
     gap: var(--space-xs);
 }
-/* labels sit above their dash so the rail stays narrow, and the label gets
-   a paper pill so it stays readable if it floats over the chart panel */
+/* each dash carries its chapter color; labels appear on hover only, in a
+   paper pill above the dash so they stay readable over the chart panel.
+   The whole rail fades out once the story ends and methodology arrives. */
+.chapter-rail { transition: opacity var(--ease); }
+.chapter-rail.is-hidden { opacity: 0; pointer-events: none; }
+
+.chapter-rail a[data-rail="expect"] { --rail-color: var(--chapter-expect); }
+.chapter-rail a[data-rail="surprise"] { --rail-color: var(--chapter-surprise); }
+.chapter-rail a[data-rail="threat"] { --rail-color: var(--chapter-threat); }
+
 .chapter-rail a {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 3px;
     text-decoration: none;
-    color: var(--ink-500);
+    color: var(--rail-color, var(--ink-500));
     font-size: 0.75rem;
     font-weight: 600;
-    opacity: 0.75;
-    transition: color var(--ease), opacity var(--ease);
+    transition: color var(--ease);
 }
 .chapter-rail a::after {
     content: '';
     width: 18px;
     height: 3px;
     border-radius: 2px;
-    background: var(--ink-300);
-    transition: background var(--ease), width var(--ease);
-}
-.chapter-rail a.is-active {
-    color: var(--rail-color, var(--accent));
-    opacity: 1;
+    background: var(--rail-color, var(--ink-300));
+    opacity: 0.35;
+    transition: opacity var(--ease), width var(--ease);
 }
 .chapter-rail a.is-active::after {
-    background: var(--rail-color, var(--accent));
+    opacity: 1;
     width: 28px;
 }
 .chapter-rail .rail-label {
@@ -193,7 +197,6 @@
     padding: 1px 6px;
     white-space: nowrap;
 }
-.chapter-rail a.is-active .rail-label,
 .chapter-rail a:hover .rail-label { display: inline-block; }
 
 /* progress bar under the header */

@@ -58,6 +58,16 @@
 .map-aside .aside-value strong { color: var(--accent); }
 .map-aside svg { width: 100%; height: auto; }
 
+.aside-legend { display: flex; flex-direction: column; gap: var(--space-3xs); }
+.aside-legend .legend-item { font-size: 0.75rem; }
+.line-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
 .axis text { font-family: var(--font-mono); font-size: 0.6875rem; fill: var(--ink-500); }
 .axis path, .axis line { stroke: var(--ink-300); }
 .gridline { stroke: var(--ink-100); stroke-dasharray: 2 3; }

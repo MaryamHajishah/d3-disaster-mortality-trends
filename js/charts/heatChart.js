@@ -28,16 +28,22 @@ export function renderHeatChart(container, data, tooltip) {
         g.append('g').attr('class', 'axis')
             .call(d3.axisLeft(y).ticks(5).tickFormat((d) => d3.format('.2s')(d)));
 
+        // nulls mean the decade had no heat or cold records, so the line and
+        // area skip them instead of dropping to a false zero
+        const defined = (v) => v != null;
+        const lastIndex = values.length - 1;
+        const isPartialEnd = data.partial_decade === decades[lastIndex];
+
         g.append('path')
             .datum(values)
             .attr('fill', AREA_COLOR)
             .attr('d', d3.area()
+                .defined(defined)
                 .x((_, i) => x(decades[i]))
                 .y0(innerHeight)
                 .y1((v) => y(v)));
 
         // the segment into the incomplete decade is dashed, newspaper style
-        const isPartialEnd = data.partial_decade === decades[decades.length - 1];
         const solidValues = isPartialEnd ? values.slice(0, -1) : values;
 
         g.append('path')
@@ -45,33 +51,33 @@ export function renderHeatChart(container, data, tooltip) {
             .attr('fill', 'none')
             .attr('stroke', LINE_COLOR)
             .attr('stroke-width', 3)
-            .attr('d', d3.line().x((_, i) => x(decades[i])).y((v) => y(v)));
+            .attr('d', d3.line().defined(defined).x((_, i) => x(decades[i])).y((v) => y(v)));
 
         if (isPartialEnd) {
-            const n = decades.length;
             g.append('path')
-                .datum(values.slice(n - 2))
+                .datum(values.slice(lastIndex - 1))
                 .attr('fill', 'none')
                 .attr('stroke', LINE_COLOR)
                 .attr('stroke-width', 3)
                 .attr('stroke-dasharray', '5 4')
-                .attr('d', d3.line()
-                    .x((_, i) => x(decades[n - 2 + i]))
+                .attr('d', d3.line().defined(defined)
+                    .x((_, i) => x(decades[lastIndex - 1 + i]))
                     .y((v) => y(v)));
         }
 
-        g.selectAll('.dot').data(values).join('circle')
-            .attr('cx', (_, i) => x(decades[i]))
-            .attr('cy', (v) => y(v))
+        g.selectAll('.dot')
+            .data(values.map((v, i) => ({ v, i })).filter((d) => d.v != null))
+            .join('circle')
+            .attr('cx', (d) => x(decades[d.i]))
+            .attr('cy', (d) => y(d.v))
             .attr('r', 4)
-            .attr('fill', (_, i) => (isPartialEnd && i === values.length - 1 ? '#ffffff' : LINE_COLOR))
+            .attr('fill', (d) => (isPartialEnd && d.i === lastIndex ? '#ffffff' : LINE_COLOR))
             .attr('stroke', LINE_COLOR)
-            .attr('stroke-width', (_, i) => (isPartialEnd && i === values.length - 1 ? 2 : 0))
-            .on('pointermove', (event, v) => {
-                const i = values.indexOf(v);
-                const suffix = data.partial_decade === decades[i] ? ' (partial decade)' : '';
+            .attr('stroke-width', (d) => (isPartialEnd && d.i === lastIndex ? 2 : 0))
+            .on('pointermove', (event, d) => {
+                const suffix = data.partial_decade === decades[d.i] ? ' (partial decade)' : '';
                 tooltip.show(
-                    `<strong>${formatDecade(decades[i])}${suffix}</strong>${v.toLocaleString()} deaths from heat and cold waves`,
+                    `<strong>${formatDecade(decades[d.i])}${suffix}</strong>${d.v.toLocaleString()} deaths from heat and cold waves`,
                     event.clientX, event.clientY
                 );
             })
