@@ -270,12 +270,38 @@
         </div>
     </section>
 
-    <!-- team: one member, so a strip rather than a full section -->
-    <section class="team-strip" id="team">
+    <!-- about the project and who made it -->
+    <section class="section about" id="team">
         <div class="container">
-            <div class="team-avatar" aria-hidden="true">M</div>
-            <p class="team-line"><strong>Maryam Hajishah</strong> &middot; solo project:
-            data collection, preprocessing, visualization and design.</p>
+            <div class="section-head">
+                <span class="section-eyebrow">About</span>
+                <h2>About this project</h2>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-context">
+                    <h3>Project context</h3>
+                    <p>This project was built for the <strong>Data Visualization</strong>
+                    course at the <strong>University of Genoa</strong> during the 2025/2026
+                    academic year. It turns a familiar public dataset into a scrolling
+                    story, aiming to make a long-run trend readable at a glance while
+                    staying honest about where the record is thin.</p>
+                    <p>Every figure is drawn straight from the source data. Where the
+                    history is uncertain or missing, the charts say so instead of filling
+                    the gap with a confident guess.</p>
+                </div>
+
+                <aside class="about-team">
+                    <h3>Team</h3>
+                    <div class="team-member">
+                        <span class="team-avatar" aria-hidden="true">M</span>
+                        <span class="team-member-text">
+                            <strong>Maryam Hajishah</strong>
+                            <span class="team-role">Data preprocessing, visualization and design</span>
+                        </span>
+                    </div>
+                </aside>
+            </div>
         </div>
     </section>
 
@@ -284,29 +310,35 @@
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
-            <div>
+            <div class="footer-brand">
                 <h4>The Quiet Victory</h4>
-                <p>A university data-visualization project on long-run trends in natural
-                disaster deaths, built with D3.js.</p>
+                <p>A scrolling data story on a century of natural disasters, and the
+                quiet fall in the risk of dying in one. Built with D3.js.</p>
+            </div>
+            <div>
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="#story">The story</a></li>
+                    <li><a href="#methodology">Methodology</a></li>
+                </ul>
             </div>
             <div>
                 <h4>Data</h4>
                 <ul>
-                    <li><a href="https://www.emdat.be/" target="_blank" rel="noopener">EM-DAT</a></li>
+                    <li><a href="https://www.emdat.be/" target="_blank" rel="noopener">EM-DAT (CRED / UCLouvain)</a></li>
                     <li><a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">Our World in Data</a></li>
                 </ul>
             </div>
             <div>
-                <h4>Project</h4>
+                <h4>University</h4>
                 <ul>
-                    <li><a href="#methodology">Methodology</a></li>
-                    <li><a href="README.md">README and how to run</a></li>
+                    <li><a href="https://unige.it/en" target="_blank" rel="noopener">University of Genoa</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <span>Built for a university course on data-driven storytelling.</span>
-            <span>Data: EM-DAT / CRED via Our World in Data, CC BY 4.0.</span>
+            <span>&copy; 2026 The Quiet Victory &middot; Data Visualization, University of Genoa.</span>
+            <span>Data from EM-DAT / CRED (UCLouvain) via Our World in Data, licensed CC BY 4.0.</span>
         </div>
     </div>
 </footer>
