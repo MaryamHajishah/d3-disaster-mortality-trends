@@ -141,4 +141,4 @@ The site's methodology section documents these in full. The main constraints are
 - **Incomplete current decade.** The 2020s cover only 2020 to 2025 and are marked as partial wherever they appear, so they should not be read as a finished decade.
 - **Uncertain historical estimates.** Death tolls for early famines are approximate and carry wide margins of error.
 
-These caveats affect the precision of individual figures but not the central finding. The decline in death rates, roughly 93 percent across the century, is far too large to be explained by improved reporting alone.
+These constraints affect the precision of individual values rather than the overall trend. The observed decline in the disaster death rate (approximately 93% over the study period) exceeds the range of uncertainty attributable to changes in reporting coverage.
