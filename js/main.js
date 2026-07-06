@@ -14,7 +14,6 @@ import {
     renderDroughtChart,
     renderHeatChart,
     renderDisasterMap,
-    renderSwarmChart,
     mapLegendBins,
     colorForType,
     colorForEventType,
@@ -56,19 +55,18 @@ async function main() {
     const visualPanel = document.getElementById('story-visual');
 
     // Each renderer returns a cleanup handle: the simple charts return their
-    // ResizeObserver, the swarm and the map return controllers with timers
-    // and simulations. The previous chart's handle must be torn down on
-    // every switch, otherwise its resize observer keeps redrawing the old
-    // chart into the slot on top of the new one.
+    // ResizeObserver, the map returns a controller with timers and a
+    // simulation. The previous chart's handle must be torn down on every
+    // switch, otherwise its resize observer keeps redrawing the old chart
+    // into the slot on top of the new one.
     let activeHandle = null;
     let currentChart = null;
 
-    // Two entries share the deaths-by-type chart: step 5 re-renders it with
+    // Two entries share the deaths-by-type chart: step 4 re-renders it with
     // the drought layer highlighted and everything else faded.
     const renderers = {
         events: () => renderEventsChart(chartSlot, data.events, tooltip),
         deathRate: () => renderDeathRateChart(chartSlot, data.deathRate, tooltip),
-        swarm: () => renderSwarmChart(chartSlot, data.countryMap, tooltip),
         deathsAll: () => renderDeathsByTypeChart(chartSlot, data.deathsByType, tooltip),
         deathsDrought: () => renderDroughtChart(chartSlot, data.deathsByType, tooltip),
         heat: () => renderHeatChart(chartSlot, data.deathsByType, tooltip),
@@ -88,9 +86,6 @@ async function main() {
     const partialNote = { label: '* 2020 to 2025 only', note: true };
     const legends = {
         events: [...eventKeys.map((k) => ({ label: typeLabel(k), color: colorForEventType(k) })), partialNote],
-        // same bins as the map, minus "no data": countries without records
-        // are simply absent from the swarm, not drawn in grey
-        swarm: [...mapLegendBins().filter((b) => b.label !== 'no data'), partialNote],
         deathsAll: [...deathKeys.map((k) => ({ label: typeLabel(k), color: colorForType(k) })), partialNote],
         // single series: the title carries it, so no legend swatch (Guideline 3)
         deathsDrought: [partialNote],
@@ -103,7 +98,6 @@ async function main() {
     const meta = {
         events: { title: 'Recorded disasters per decade, by type', unit: 'events per decade' },
         deathRate: { title: 'Global deaths from natural disasters', unit: 'deaths per 100,000 people' },
-        swarm: { title: 'Decade-average death rate, one dot per country', unit: 'deaths per 100,000 people' },
         deathsAll: { title: 'Deaths per decade, by disaster type', unit: 'people' },
         deathsDrought: { title: 'Drought and famine deaths per decade', unit: 'people' },
         heat: { title: 'Deaths from heat and cold waves', unit: 'people per decade' },
