@@ -5,6 +5,7 @@ import { DataLoader } from './modules/dataLoader.js';
 import { Tooltip } from './modules/tooltip.js';
 import { StoryScroller } from './modules/storyScroller.js';
 import { setupNav } from './modules/nav.js';
+import { initHeroBackdrop } from './modules/heroBackdrop.js';
 
 import {
     renderEventsChart,
@@ -13,10 +14,12 @@ import {
     renderDroughtChart,
     renderHeatChart,
     renderDisasterMap,
+    renderSwarmChart,
     mapLegendBins,
     colorForType,
     colorForEventType,
     typeLabel,
+    EVENT_STACK_KEYS,
 } from './charts/index.js';
 
 // Chapter accents step through the dry scale so the page darkens as the
@@ -29,6 +32,11 @@ const CHAPTERS = {
 
 async function main() {
     setupNav();
+
+    const heroFx = document.querySelector('.hero-fx');
+    const heroSection = document.querySelector('.hero');
+    if (heroFx && heroSection) initHeroBackdrop(heroFx, heroSection);
+
     const tooltip = new Tooltip(document.getElementById('chart-tooltip'));
     const loader = new DataLoader();
 
@@ -47,40 +55,47 @@ async function main() {
     const chartUnit = document.getElementById('chart-unit');
     const visualPanel = document.getElementById('story-visual');
 
-    let mapController = null;
+    // Each renderer returns a cleanup handle: the simple charts return their
+    // ResizeObserver, the swarm and the map return controllers with timers
+    // and simulations. The previous chart's handle must be torn down on
+    // every switch, otherwise its resize observer keeps redrawing the old
+    // chart into the slot on top of the new one.
+    let activeHandle = null;
     let currentChart = null;
 
-    // Two entries share the deaths-by-type chart: step 4 re-renders it with
+    // Two entries share the deaths-by-type chart: step 5 re-renders it with
     // the drought layer highlighted and everything else faded.
     const renderers = {
         events: () => renderEventsChart(chartSlot, data.events, tooltip),
         deathRate: () => renderDeathRateChart(chartSlot, data.deathRate, tooltip),
+        swarm: () => renderSwarmChart(chartSlot, data.countryMap, tooltip),
         deathsAll: () => renderDeathsByTypeChart(chartSlot, data.deathsByType, tooltip),
         deathsDrought: () => renderDroughtChart(chartSlot, data.deathsByType, tooltip),
         heat: () => renderHeatChart(chartSlot, data.deathsByType, tooltip),
         map: async () => {
-            mapController = await renderDisasterMap(chartSlot, data.countryMap, tooltip, { world: data.deathRate });
-            setupMapControls(mapController, data.countryMap);
+            const controller = await renderDisasterMap(chartSlot, data.countryMap, tooltip, { world: data.deathRate });
+            setupMapControls(controller, data.countryMap);
+            return controller;
         },
     };
 
     // legend entries per chart; the map draws its own legend inside the svg
     // and the heat chart is a single named series, so both leave this empty
-    const eventKeys = Object.keys(data.events.series).filter((k) => k !== 'All disasters');
-    const deathKeys = Object.keys(data.deathsByType.by_type);
+    // Legends are ordered to match each chart's visual stacking order, top
+    // segment first, rather than the arbitrary data order (Guideline 3).
+    const eventKeys = EVENT_STACK_KEYS.slice().reverse();
+    const deathKeys = Object.keys(data.deathsByType.by_type).reverse();
     const partialNote = { label: '* 2020 to 2025 only', note: true };
     const legends = {
         events: [...eventKeys.map((k) => ({ label: typeLabel(k), color: colorForEventType(k) })), partialNote],
+        // same bins as the map, minus "no data": countries without records
+        // are simply absent from the swarm, not drawn in grey
+        swarm: [...mapLegendBins().filter((b) => b.label !== 'no data'), partialNote],
         deathsAll: [...deathKeys.map((k) => ({ label: typeLabel(k), color: colorForType(k) })), partialNote],
-        deathsDrought: [
-            { label: 'Drought deaths', color: colorForType('Droughts') },
-            partialNote,
-        ],
-        deathRate: [
-            { label: 'All disasters (world total)', color: '#5f7d6c' },
-            { label: 'Individual disaster types', color: '#cfc8bb' },
-            partialNote,
-        ],
+        // single series: the title carries it, so no legend swatch (Guideline 3)
+        deathsDrought: [partialNote],
+        // legend removed; the two lines are labeled directly on the chart
+        deathRate: [partialNote],
         heat: [partialNote],
         map: mapLegendBins(),
     };
@@ -88,6 +103,7 @@ async function main() {
     const meta = {
         events: { title: 'Recorded disasters per decade, by type', unit: 'events per decade' },
         deathRate: { title: 'Global deaths from natural disasters', unit: 'deaths per 100,000 people' },
+        swarm: { title: 'Decade-average death rate, one dot per country', unit: 'deaths per 100,000 people' },
         deathsAll: { title: 'Deaths per decade, by disaster type', unit: 'people' },
         deathsDrought: { title: 'Drought and famine deaths per decade', unit: 'people' },
         heat: { title: 'Deaths from heat and cold waves', unit: 'people per decade' },
@@ -97,10 +113,11 @@ async function main() {
     async function activate(chartKey, chapter) {
         if (currentChart === chartKey) return;
         currentChart = chartKey;
-        if (mapController) {
+        if (activeHandle) {
             stopMapPlayback();
-            mapController.destroy();
-            mapController = null;
+            activeHandle.destroy?.();
+            activeHandle.disconnect?.();
+            activeHandle = null;
         }
 
         chartTitle.textContent = meta[chartKey].title;
@@ -112,7 +129,15 @@ async function main() {
             visualPanel.style.setProperty('--chapter-color', theme.color);
         }
 
-        await renderers[chartKey]();
+        const handle = (await renderers[chartKey]()) ?? null;
+        if (currentChart === chartKey) {
+            activeHandle = handle;
+        } else if (handle) {
+            // a faster scroll already activated another chart while this one
+            // was rendering; retire this handle instead of leaking it
+            handle.destroy?.();
+            handle.disconnect?.();
+        }
     }
 
     function updateRail(chapter) {

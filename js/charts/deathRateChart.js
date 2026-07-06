@@ -63,6 +63,25 @@ export function renderDeathRateChart(container, data, tooltip) {
                     .y((v) => y(v)));
         }
 
+        // Direct labels instead of a legend (Guideline 3: integrate graphics
+        // and text). The sage total line is named at its high left end where
+        // it stands alone; the grey bundle gets one quiet label above it.
+        g.append('text')
+            .attr('x', x(decades[0]) + 8)
+            .attr('y', y(data.total[0]) + 4)
+            .attr('fill', LINE_COLOR)
+            .attr('font-size', '12px')
+            .attr('font-weight', 700)
+            .text('All disasters');
+
+        const greyTopEarly = d3.max(typeKeys, (k) => data.by_type[k]?.[1] ?? 0);
+        g.append('text')
+            .attr('x', x(decades[1]) + 6)
+            .attr('y', y(greyTopEarly) - 8)
+            .attr('fill', '#8a8078')
+            .attr('font-size', '11px')
+            .text('individual disaster types');
+
         g.selectAll('.dot').data(data.total).join('circle')
             .attr('class', 'dot')
             .attr('cx', (_, i) => x(decades[i]))

@@ -39,13 +39,14 @@
 <nav class="chapter-rail" aria-label="Story chapters">
     <a href="#step-1" data-rail="expect"><span class="rail-label">What you'd expect</span></a>
     <a href="#step-2" data-rail="surprise"><span class="rail-label">The surprise</span></a>
-    <a href="#step-5" data-rail="threat"><span class="rail-label">The new threat</span></a>
+    <a href="#step-6" data-rail="threat"><span class="rail-label">The new threat</span></a>
 </nav>
 
 <main id="top">
 
     <!-- hero / scarf -->
     <section class="hero">
+        <canvas class="hero-fx" aria-hidden="true"></canvas>
         <div class="container">
             <p class="hero-eyebrow">A data story &middot; Natural disasters, 1900&ndash;2025</p>
             <h1 class="hero-title">The deadliest age of natural disasters is <em>behind us.</em></h1>
@@ -60,7 +61,7 @@
             <nav class="hero-roadmap" aria-label="Story outline">
                 <a href="#step-1" class="roadmap-chip"><span class="chip-num">01</span><span class="chip-label">What you'd expect</span></a>
                 <a href="#step-2" class="roadmap-chip"><span class="chip-num">02</span><span class="chip-label">The surprise</span></a>
-                <a href="#step-5" class="roadmap-chip"><span class="chip-num">03</span><span class="chip-label">The new threat</span></a>
+                <a href="#step-6" class="roadmap-chip"><span class="chip-num">03</span><span class="chip-label">The new threat</span></a>
             </nav>
 
             <div class="hero-stats">
@@ -126,7 +127,23 @@
                     </div>
                 </article>
 
-                <article class="story-step" id="step-3" data-step="3" data-chart="deathsAll" data-chapter="surprise">
+                <article class="story-step" id="step-3" data-step="3" data-chart="swarm" data-chapter="surprise">
+                    <div class="story-card">
+                        <span class="chapter-tag">02 &middot; The surprise</span>
+                        <h3>And it was not just the average</h3>
+                        <p>A falling world total could still hide losers: one huge country
+                        improving while dozens got worse. Watch the century play out with
+                        every country as its own dot. The whole field drifts left, toward
+                        zero, and the dark dots of the famine decades disappear. The decline
+                        is close to universal.</p>
+                        <p class="figure-note">Each dot is one country's decade average, on a
+                        square-root scale. Countries with no EM-DAT records for a decade are
+                        left out entirely; the counter above the chart says how many are shown,
+                        so thin early coverage is visible rather than hidden.</p>
+                    </div>
+                </article>
+
+                <article class="story-step" id="step-4" data-step="4" data-chart="deathsAll" data-chapter="surprise">
                     <div class="story-card">
                         <span class="chapter-tag">02 &middot; The surprise</span>
                         <h3>The old killer was hunger</h3>
@@ -137,7 +154,7 @@
                     </div>
                 </article>
 
-                <article class="story-step" id="step-4" data-step="4" data-chart="deathsDrought" data-chapter="surprise">
+                <article class="story-step" id="step-5" data-step="5" data-chart="deathsDrought" data-chapter="surprise">
                     <div class="story-card">
                         <span class="chapter-tag">02 &middot; The surprise</span>
                         <h3>And hunger is the problem we solved</h3>
@@ -150,7 +167,7 @@
                 </article>
 
                 <!-- chapter 3: the warning -->
-                <article class="story-step" id="step-5" data-step="5" data-chart="heat" data-chapter="threat">
+                <article class="story-step" id="step-6" data-step="6" data-chart="heat" data-chapter="threat">
                     <div class="story-card">
                         <span class="chapter-tag">03 &middot; The new threat</span>
                         <h3>One line is rising</h3>
@@ -164,7 +181,7 @@
                     </div>
                 </article>
 
-                <article class="story-step" id="step-6" data-step="6" data-chart="map" data-chapter="threat">
+                <article class="story-step" id="step-7" data-step="7" data-chart="map" data-chapter="threat">
                     <div class="story-card">
                         <span class="chapter-tag">03 &middot; The new threat</span>
                         <h3>Progress, seen from above</h3>

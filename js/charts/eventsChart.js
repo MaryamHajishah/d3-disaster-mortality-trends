@@ -1,11 +1,13 @@
 import { mountSVG, size, observeResize, formatDecade, colorForEventType, typeLabel, hatchFill, decadeTickFormat } from './baseChart.js';
 
-const KEYS = ['Drought', 'Earthquake', 'Extreme weather', 'Flood', 'Landslide', 'Volcanic activity', 'Wildfire', 'Extreme temperature'];
+// stacking order, bottom to top; exported so the legend in main.js can be
+// sorted to match the chart instead of the arbitrary data order (Guideline 3)
+export const EVENT_STACK_KEYS = ['Drought', 'Earthquake', 'Extreme weather', 'Flood', 'Landslide', 'Volcanic activity', 'Wildfire', 'Extreme temperature'];
 
 export function renderEventsChart(container, data, tooltip) {
     const rows = data.decades.map((decade, i) => {
         const row = { decade };
-        KEYS.forEach((k) => { row[k] = data.series[k]?.[i] ?? 0; });
+        EVENT_STACK_KEYS.forEach((k) => { row[k] = data.series[k]?.[i] ?? 0; });
         return row;
     });
 
@@ -14,7 +16,7 @@ export function renderEventsChart(container, data, tooltip) {
         const { svg, g } = mountSVG(container);
 
         const x = d3.scaleBand().domain(rows.map((d) => d.decade)).range([0, innerWidth]).padding(0.12);
-        const stacked = d3.stack().keys(KEYS)(rows);
+        const stacked = d3.stack().keys(EVENT_STACK_KEYS)(rows);
         const yMax = d3.max(stacked[stacked.length - 1], (d) => d[1]);
         const y = d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
 
